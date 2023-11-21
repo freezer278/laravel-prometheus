@@ -8,6 +8,7 @@ use VMorozov\Prometheus\Collectors\Interfaces\MetricCollector;
 abstract class AbstractMetricCollector implements MetricCollector
 {
     protected CollectorRegistry $collectionRegistry;
+
     protected string $namespace;
 
     public function __construct(CollectorRegistry $collectorRegistry)

@@ -7,7 +7,9 @@ use Prometheus\Counter;
 abstract class AbstractTotalCounterMetricCollector extends AbstractMetricCollector
 {
     const TYPE_ALL = 'all';
+
     const TYPE_SUCCESSFUL = 'successful';
+
     const TYPE_FAILED = 'failed';
 
     public function incrementFailed(): void

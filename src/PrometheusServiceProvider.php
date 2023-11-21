@@ -12,7 +12,9 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 class PrometheusServiceProvider extends PackageServiceProvider
 {
     const STORAGE_TYPE_REDIS = 'redis';
+
     const STORAGE_TYPE_IN_MEMORY = 'in_memory';
+
     const STORAGE_TYPE_APC = 'apcu';
 
     public function configurePackage(Package $package): void
@@ -42,7 +44,7 @@ class PrometheusServiceProvider extends PackageServiceProvider
                 break;
             default:
                 throw new \InvalidArgumentException(
-                    'Wrong value in "laravel-prometheus.storage_type" config: ' . $type
+                    'Wrong value in "laravel-prometheus.storage_type" config: '.$type
                 );
         }
 
@@ -53,9 +55,9 @@ class PrometheusServiceProvider extends PackageServiceProvider
     private function initRedisStorage(): Redis
     {
         $connectionName = config('laravel-prometheus.redis_connection', 'default');
-        $connection = config('database.redis.' . $connectionName);
+        $connection = config('database.redis.'.$connectionName);
 
-        if (!$connection) {
+        if (! $connection) {
             throw new \InvalidArgumentException(
                 "Invalid redis connection name in prometheus config: $connectionName"
             );
