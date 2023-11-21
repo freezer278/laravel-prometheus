@@ -1,45 +1,49 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "vmorozov/laravel-prometheus",
+    "description": "Prometheus client for laravel framework",
     "keywords": [
-        ":vendor_name",
-        ":package_slug"
+        "vmorozov",
+        "laravel-prometheus"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/vmorozov/laravel-prometheus",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Vladimir Morozov",
+            "email": "freezer278@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^8.1"
+        "php": "^8.1",
+        "illuminate/contracts": ">=9.0",
+        "promphp/prometheus_client_php": "^2.7",
+        "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {
-        :require_dev_testing,
-        :require_dev_codestyle,
-        "spatie/ray": "^1.28"
+        "phpunit/phpunit": "^10.3.2",
+        "laravel/pint": "^1.0",
+        "orchestra/testbench": "^v8.15.0"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src"
+            "VMorozov\\Prometheus\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "VMorozov\\Prometheus\\Tests\\": "tests"
         }
     },
     "scripts": {
-        :scripts_testing,
-        :scripts_codestyle
+        "test": "vendor/bin/phpunit",
+            "test-coverage": "vendor/bin/phpunit --coverage",
+        "format": "vendor/bin/pint"
     },
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            :plugins_testing,
+
             "phpstan/extension-installer": true
         }
     },
