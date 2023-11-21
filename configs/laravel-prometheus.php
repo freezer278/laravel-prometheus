@@ -6,5 +6,5 @@ return [
     // type of storage for keeping metrics data (known values: redis, in_memory, apcu)
     'storage_type' => env('PROMETHEUS_STORAGE_TYPE','redis'),
     // redis connection for prometheus metrics (used only when storage_type == redis)
-    'redis_connection' => env('PROMETHEUS_REDIS_CONNECTION', 'prometheus'),
+    'redis_connection' => env('PROMETHEUS_REDIS_CONNECTION', 'default'),
 ];
