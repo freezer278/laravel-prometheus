@@ -8,9 +8,13 @@ use Prometheus\Storage\InMemory;
 use Prometheus\Storage\Redis;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use VMorozov\Prometheus\Controllers\MetricsController;
+use Illuminate\Support\Facades\Route;
 
 class PrometheusServiceProvider extends PackageServiceProvider
 {
+    const CONFIG_KEY = 'laravel-prometheus';
+
     const STORAGE_TYPE_REDIS = 'redis';
 
     const STORAGE_TYPE_IN_MEMORY = 'in_memory';
@@ -20,18 +24,21 @@ class PrometheusServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('laravel-prometheus')
+            ->name(self::CONFIG_KEY)
             ->hasConfigFile();
     }
 
     public function packageRegistered(): void
     {
         $this->initCollectorRegistry();
+
+        Route::get(config(self::CONFIG_KEY.'.route_url'), MetricsController::class)
+            ->name('metrics');
     }
 
     private function initCollectorRegistry(): void
     {
-        $type = config('laravel-prometheus.storage_type');
+        $type = config(self::CONFIG_KEY . '.storage_type');
         switch ($type) {
             case self::STORAGE_TYPE_REDIS:
                 $storage = $this->initRedisStorage();
@@ -54,8 +61,8 @@ class PrometheusServiceProvider extends PackageServiceProvider
 
     private function initRedisStorage(): Redis
     {
-        $connectionName = config('laravel-prometheus.redis_connection', 'default');
-        $connection = config('database.redis.'.$connectionName);
+        $connectionName = config(self::CONFIG_KEY . '.redis_connection', 'default');
+        $connection = config('database.redis.' . $connectionName);
 
         if (! $connection) {
             throw new \InvalidArgumentException(
