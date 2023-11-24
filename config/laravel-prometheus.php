@@ -8,5 +8,7 @@ return [
     // redis connection for prometheus metrics (used only when storage_type == redis)
     'redis_connection' => env('PROMETHEUS_REDIS_CONNECTION', 'default'),
 
-    'route_url' => '/metrics',
+    'route_url' => 'metrics',
+
+    'default_metrics_enabled' => true,
 ];

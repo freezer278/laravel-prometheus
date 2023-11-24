@@ -2,27 +2,27 @@
 
 namespace VMorozov\Prometheus\Collectors;
 
+use Prometheus\Histogram;
 use Prometheus\Summary;
 
-abstract class AbstractSummaryMetricCollector extends AbstractMetricCollector
+abstract class AbstractHistogramMetricCollector extends AbstractMetricCollector
 {
     public const MAX_AGE_MINUTES = 60;
 
     public function addItem(float $item, array $labels = []): void
     {
-        $summary = $this->getSummary();
+        $summary = $this->getHistogram();
         $summary->observe($item, $labels);
     }
 
-    private function getSummary(): Summary
+    private function getHistogram(): Histogram
     {
-        return $this->collectionRegistry->getOrRegisterSummary(
+        return $this->collectionRegistry->getOrRegisterHistogram(
             $this->namespace,
             $this->getMetricName(),
             $this->getHelpText(),
-            ['type'],
-            static::MAX_AGE_MINUTES * 60,
-            $this->getQuantiles(),
+            $this->getLabels(),
+            $this->getBuckets(),
         );
     }
 
@@ -30,8 +30,13 @@ abstract class AbstractSummaryMetricCollector extends AbstractMetricCollector
 
     abstract protected function getHelpText(): string;
 
-    protected function getQuantiles(): array
+    protected function getLabels(): array
     {
-        return [0.01, 0.25, 0.5, 0.95, 0.98];
+        return [];
+    }
+
+    protected function getBuckets(): array
+    {
+        return Histogram::getDefaultBuckets();
     }
 }

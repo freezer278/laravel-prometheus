@@ -2,6 +2,7 @@
 
 namespace VMorozov\Prometheus;
 
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Route;
 use Prometheus\CollectorRegistry;
 use Prometheus\Storage\APC;
@@ -10,6 +11,7 @@ use Prometheus\Storage\Redis;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use VMorozov\Prometheus\Controllers\MetricsController;
+use VMorozov\Prometheus\Middleware\CollectRequestDurationMetric;
 
 class PrometheusServiceProvider extends PackageServiceProvider
 {
@@ -34,6 +36,11 @@ class PrometheusServiceProvider extends PackageServiceProvider
 
         Route::get(config(self::CONFIG_KEY . '.route_url'), MetricsController::class)
             ->name('metrics');
+
+        /** @var Kernel $kernel */
+        $kernel = $this->app->make(Kernel::class);
+        $middleware = $this->app->make(CollectRequestDurationMetric::class);
+        $kernel->prependMiddleware($middleware);
     }
 
     private function initCollectorRegistry(): void
@@ -55,7 +62,7 @@ class PrometheusServiceProvider extends PackageServiceProvider
                 );
         }
 
-        $registry = new CollectorRegistry($storage);
+        $registry = new CollectorRegistry($storage, false);
         $this->app->instance(CollectorRegistry::class, $registry);
     }
 
