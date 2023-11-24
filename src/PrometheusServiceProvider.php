@@ -77,7 +77,7 @@ class PrometheusServiceProvider extends PackageServiceProvider
             'timeout' => 0.1, // in seconds
             'read_timeout' => '10', // in seconds
             'persistent_connections' => false,
-            'database' => $connection['database'],
+            'database' => (int)$connection['database'],
         ]);
     }
 }
