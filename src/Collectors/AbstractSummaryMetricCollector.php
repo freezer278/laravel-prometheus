@@ -20,7 +20,7 @@ abstract class AbstractSummaryMetricCollector extends AbstractMetricCollector
             $this->namespace,
             $this->getMetricName(),
             $this->getHelpText(),
-            ['type'],
+            $this->getLabels(),
             static::MAX_AGE_MINUTES * 60,
             $this->getQuantiles(),
         );
@@ -29,6 +29,11 @@ abstract class AbstractSummaryMetricCollector extends AbstractMetricCollector
     abstract protected function getMetricName(): string;
 
     abstract protected function getHelpText(): string;
+
+    protected function getLabels(): array
+    {
+        return ['type'];
+    }
 
     protected function getQuantiles(): array
     {

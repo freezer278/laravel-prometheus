@@ -40,7 +40,10 @@ class PrometheusServiceProvider extends PackageServiceProvider
         /** @var Kernel $kernel */
         $kernel = $this->app->make(Kernel::class);
         $middleware = $this->app->make(CollectRequestDurationMetric::class);
-        $kernel->prependMiddleware($middleware);
+        $this->app->singleton(CollectRequestDurationMetric::class, function () use ($middleware) {
+            return $middleware;
+        });
+        $kernel->prependMiddleware(CollectRequestDurationMetric::class);
     }
 
     private function initCollectorRegistry(): void
