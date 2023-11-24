@@ -3,7 +3,6 @@
 namespace VMorozov\Prometheus\Collectors;
 
 use Prometheus\Histogram;
-use Prometheus\Summary;
 
 abstract class AbstractHistogramMetricCollector extends AbstractMetricCollector
 {

@@ -14,8 +14,7 @@ class CollectRequestDurationMetric
     public function __construct(
         private RequestDurationHistogramMetricCollector $histogramMetricCollector,
         private RequestDurationSummaryMetricCollector $summaryMetricCollector,
-    )
-    {
+    ) {
     }
 
     public function handle($request, Closure $next)
