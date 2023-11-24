@@ -25,7 +25,7 @@ class PrometheusServiceProvider extends PackageServiceProvider
     {
         $package
             ->name(self::CONFIG_KEY)
-            ->hasConfigFile();
+            ->hasConfigFile(self::CONFIG_KEY);
     }
 
     public function packageRegistered(): void
