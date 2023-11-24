@@ -6,7 +6,7 @@ use Prometheus\Summary;
 
 abstract class AbstractSummaryMetricCollector extends AbstractMetricCollector
 {
-    const MAX_AGE_MINUTES = 60;
+    public const MAX_AGE_MINUTES = 60;
 
     public function addItem(int $item, array $labels = []): void
     {

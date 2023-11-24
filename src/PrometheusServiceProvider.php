@@ -2,6 +2,7 @@
 
 namespace VMorozov\Prometheus;
 
+use Illuminate\Support\Facades\Route;
 use Prometheus\CollectorRegistry;
 use Prometheus\Storage\APC;
 use Prometheus\Storage\InMemory;
@@ -9,17 +10,16 @@ use Prometheus\Storage\Redis;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use VMorozov\Prometheus\Controllers\MetricsController;
-use Illuminate\Support\Facades\Route;
 
 class PrometheusServiceProvider extends PackageServiceProvider
 {
-    const CONFIG_KEY = 'laravel-prometheus';
+    public const CONFIG_KEY = 'laravel-prometheus';
 
-    const STORAGE_TYPE_REDIS = 'redis';
+    public const STORAGE_TYPE_REDIS = 'redis';
 
-    const STORAGE_TYPE_IN_MEMORY = 'in_memory';
+    public const STORAGE_TYPE_IN_MEMORY = 'in_memory';
 
-    const STORAGE_TYPE_APC = 'apcu';
+    public const STORAGE_TYPE_APC = 'apcu';
 
     public function configurePackage(Package $package): void
     {
@@ -32,7 +32,7 @@ class PrometheusServiceProvider extends PackageServiceProvider
     {
         $this->initCollectorRegistry();
 
-        Route::get(config(self::CONFIG_KEY.'.route_url'), MetricsController::class)
+        Route::get(config(self::CONFIG_KEY . '.route_url'), MetricsController::class)
             ->name('metrics');
     }
 
@@ -51,7 +51,7 @@ class PrometheusServiceProvider extends PackageServiceProvider
                 break;
             default:
                 throw new \InvalidArgumentException(
-                    'Wrong value in "laravel-prometheus.storage_type" config: '.$type
+                    'Wrong value in "laravel-prometheus.storage_type" config: ' . $type
                 );
         }
 
@@ -64,7 +64,7 @@ class PrometheusServiceProvider extends PackageServiceProvider
         $connectionName = config(self::CONFIG_KEY . '.redis_connection', 'default');
         $connection = config('database.redis.' . $connectionName);
 
-        if (! $connection) {
+        if (!$connection) {
             throw new \InvalidArgumentException(
                 "Invalid redis connection name in prometheus config: $connectionName"
             );
