@@ -33,7 +33,7 @@ class RequestDurationSummaryMetricCollector extends AbstractSummaryMetricCollect
         $diffInMilliseconds = ($endTime - $startTime) * 1000;
 
         $this->addItem($diffInMilliseconds, [
-            $request->url(),
+            $request->path(),
             $request->method(),
             $request->server('HOSTNAME'),
         ]);
