@@ -8,16 +8,22 @@ This is where your description should go. Try and limit it to a paragraph or two
 
 ## Installation
 
-You can install the package via composer:
+1. Install the package via composer:
 
 ```bash
 composer require vmorozov/laravel-prometheus
 ```
+2. Publish vendor files:
+```bash
+php artisan vendor:publish --provider="VMorozov\\Prometheus\\PrometheusServiceProvider"
+```
 
 ## Usage
 
-```php
-```
+This package provides 2 default metrics that allow to get response times (divided into buckets and percentiles) and requests counts.
+To see the collected metrics go to `/metrics` endpoint of your application.
+
+[//]: # (## Configuration)
 
 ## Testing
 

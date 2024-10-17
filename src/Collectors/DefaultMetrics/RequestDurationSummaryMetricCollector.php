@@ -9,7 +9,7 @@ class RequestDurationSummaryMetricCollector extends AbstractSummaryMetricCollect
 {
     protected function getMetricName(): string
     {
-        return 'request_duration_summary_milliseconds';
+        return 'request_duration_summary_ms';
     }
 
     protected function getHelpText(): string
@@ -24,7 +24,7 @@ class RequestDurationSummaryMetricCollector extends AbstractSummaryMetricCollect
 
     protected function getQuantiles(): array
     {
-        return [0.01, 0.25, 0.5, 0.95, 0.98];
+        return [0.01, 0.25, 0.5, 0.95, 0.99];
     }
 
     public function recordRequest(Request $request, float $startTime): void

@@ -9,7 +9,7 @@ class RequestDurationHistogramMetricCollector extends AbstractHistogramMetricCol
 {
     protected function getMetricName(): string
     {
-        return 'request_duration_histogram_milliseconds';
+        return 'request_duration_histogram_ms';
     }
 
     protected function getHelpText(): string
