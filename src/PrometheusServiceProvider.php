@@ -78,10 +78,10 @@ class PrometheusServiceProvider extends PackageServiceProvider
                 $storage = $this->initRedisStorage();
                 break;
             case self::STORAGE_TYPE_IN_MEMORY:
-                $storage = new InMemory;
+                $storage = new InMemory();
                 break;
             case self::STORAGE_TYPE_APC:
-                $storage = new APC;
+                $storage = new APC();
                 break;
             default:
                 throw new InvalidArgumentException(
