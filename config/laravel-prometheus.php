@@ -9,6 +9,9 @@ return [
     'redis_connection' => env('PROMETHEUS_REDIS_CONNECTION', 'default'),
 
     'route_url' => 'metrics',
+    'route_middleware' => [
+        \VMorozov\Prometheus\Middleware\AllowIpsMiddleware::class,
+    ],
 
     'default_metrics_enabled' => true,
 ];
