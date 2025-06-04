@@ -3,8 +3,6 @@
 namespace VMorozov\Prometheus;
 
 use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Queue\Events\JobQueued;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
 use Prometheus\CollectorRegistry;
@@ -13,7 +11,6 @@ use Prometheus\Storage\InMemory;
 use Prometheus\Storage\Redis;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VMorozov\Prometheus\Collectors\DefaultMetrics\QueueSizeGaugeMetricCollector;
 use VMorozov\Prometheus\Controllers\MetricsController;
 use VMorozov\Prometheus\Middleware\CollectRequestDurationMetric;
 
@@ -47,21 +44,7 @@ class PrometheusServiceProvider extends PackageServiceProvider
         $kernel->prependMiddleware(CollectRequestDurationMetric::class);
     }
 
-    public function packageBooted()
-    {
-        $queueMetricsSampleRate = env('QUEUE_METRICS_SAMPLE_RATE', 0.5);
-
-        /** @var QueueSizeGaugeMetricCollector $queueSizeMetricsCollector */
-        $queueSizeMetricsCollector = $this->app->make(QueueSizeGaugeMetricCollector::class);
-
-        Event::listen(function (JobQueued $event) use ($queueSizeMetricsCollector, $queueMetricsSampleRate) {
-            if (mt_rand() / mt_getrandmax() >= $queueMetricsSampleRate) {
-                return;
-            }
-
-            $queueSizeMetricsCollector->recordCurrentSizeFromJobQueuedEvent($event);
-        });
-    }
+    public function packageBooted() {}
 
     private function initRoutes(): void
     {

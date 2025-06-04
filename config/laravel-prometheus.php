@@ -14,4 +14,8 @@ return [
     ],
 
     'default_metrics_enabled' => true,
+
+    'live_metrics_collectors' => [
+        \VMorozov\Prometheus\Collectors\DefaultMetrics\QueueSizeGaugeLiveMetricCollector::class,
+    ],
 ];
