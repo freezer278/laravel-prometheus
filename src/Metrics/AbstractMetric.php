@@ -19,6 +19,24 @@ abstract class AbstractMetric
         $this->namespace = $namespace;
     }
 
+    protected function extractLabelsFromAssocArray(array $labels): array
+    {
+        if (array_is_list($labels)) {
+            return $labels;
+        }
+
+        $labelNames = $this->getLabelNames();
+        $result = [];
+
+        foreach ($labelNames as $name) {
+            if (isset($labels[$name])) {
+                $result[] = $labels[$name];
+            }
+        }
+
+        return $result;
+    }
+
     protected function getLabelNames(): array
     {
         return [];

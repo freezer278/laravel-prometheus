@@ -9,13 +9,13 @@ abstract class AbstractCounterMetric extends AbstractMetric
     public function increment(array $labels = []): void
     {
         $counter = $this->getCounter();
-        $counter->inc($labels);
+        $counter->inc($this->extractLabelsFromAssocArray($labels));
     }
 
     public function incrementBy(float $value, array $labels = []): void
     {
         $counter = $this->getCounter();
-        $counter->incBy($value, $labels);
+        $counter->incBy($value, $this->extractLabelsFromAssocArray($labels));
     }
 
     private function getCounter(): Counter

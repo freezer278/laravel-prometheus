@@ -9,7 +9,7 @@ abstract class AbstractHistogramMetric extends AbstractMetric
     public function addItem(float $item, array $labels = []): void
     {
         $summary = $this->getHistogram();
-        $summary->observe($item, $labels);
+        $summary->observe($item, $this->extractLabelsFromAssocArray($labels));
     }
 
     private function getHistogram(): Histogram

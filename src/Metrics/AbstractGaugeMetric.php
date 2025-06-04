@@ -9,7 +9,7 @@ abstract class AbstractGaugeMetric extends AbstractMetric
     public function setValue(float $value, array $labels = []): void
     {
         $gauge = $this->getGauge();
-        $gauge->set($value, $labels);
+        $gauge->set($value, $this->extractLabelsFromAssocArray($labels));
     }
 
     private function getGauge(): Gauge
