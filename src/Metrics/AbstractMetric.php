@@ -11,12 +11,7 @@ abstract class AbstractMetric
     public function __construct(
         protected CollectorRegistry $collectorRegistry
     ) {
-        $this->namespace = config('laravel-prometheus.namespace');
-    }
-
-    public function setNamespace(string $namespace): void
-    {
-        $this->namespace = $namespace;
+        $this->namespace = config('laravel-prometheus.namespace', 'app');
     }
 
     protected function extractLabelsFromAssocArray(array $labels): array
@@ -35,6 +30,11 @@ abstract class AbstractMetric
         }
 
         return $result;
+    }
+
+    protected function getNamespace(): string
+    {
+        return $this->namespace;
     }
 
     protected function getLabelNames(): array

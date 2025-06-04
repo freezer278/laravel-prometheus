@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Prometheus\CollectorRegistry;
 use Prometheus\RenderTextFormat;
-use VMorozov\Prometheus\Collectors\Interfaces\LiveMetricCollector;
+use VMorozov\Prometheus\Collectors\Interfaces\OnDemandMetricCollector;
 use VMorozov\Prometheus\PrometheusServiceProvider;
 
 class MetricsController
@@ -14,7 +14,8 @@ class MetricsController
     public function __construct(
         private CollectorRegistry $collectorRegistry,
         private RenderTextFormat $textRenderer,
-    ) {}
+    ) {
+    }
 
     public function __invoke(Request $request): Response
     {
@@ -27,16 +28,19 @@ class MetricsController
 
     private function callLiveMetricsCollectors(): void
     {
-        $liveMetricsCollectorClasses = config(PrometheusServiceProvider::CONFIG_KEY . '.live_metrics_collectors');
+        $onDemandMetricCollectors = config(PrometheusServiceProvider::CONFIG_KEY . '.on_demand_metric_collectors', []);
 
-        foreach ($liveMetricsCollectorClasses as $liveMetricsCollectorClass) {
-            $liveMetricsCollector = app()->make($liveMetricsCollectorClass);
+        foreach ($onDemandMetricCollectors as $onDemandCollector) {
+            $class = $onDemandCollector['class'];
+            $configs = $onDemandCollector['configs'];
 
-            if (! $liveMetricsCollector instanceof LiveMetricCollector) {
+            $liveMetricsCollector = app()->make($class);
+
+            if (!$liveMetricsCollector instanceof OnDemandMetricCollector) {
                 continue;
             }
 
-            $liveMetricsCollector->collect();
+            $liveMetricsCollector->collect($configs);
         }
     }
 }

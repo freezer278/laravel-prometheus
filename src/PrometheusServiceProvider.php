@@ -35,6 +35,8 @@ class PrometheusServiceProvider extends PackageServiceProvider
     {
         $this->initCollectorRegistry();
 
+        $this->initRoutes();
+
         /** @var Kernel $kernel */
         $kernel = $this->app->make(Kernel::class);
         $middleware = $this->app->make(CollectRequestDurationMetric::class);
@@ -44,7 +46,9 @@ class PrometheusServiceProvider extends PackageServiceProvider
         $kernel->prependMiddleware(CollectRequestDurationMetric::class);
     }
 
-    public function packageBooted() {}
+    public function packageBooted()
+    {
+    }
 
     private function initRoutes(): void
     {
@@ -59,12 +63,15 @@ class PrometheusServiceProvider extends PackageServiceProvider
         switch ($type) {
             case self::STORAGE_TYPE_REDIS:
                 $storage = $this->initRedisStorage();
+
                 break;
             case self::STORAGE_TYPE_IN_MEMORY:
-                $storage = new InMemory;
+                $storage = new InMemory();
+
                 break;
             case self::STORAGE_TYPE_APC:
-                $storage = new APC;
+                $storage = new APC();
+
                 break;
             default:
                 throw new InvalidArgumentException(
@@ -81,7 +88,7 @@ class PrometheusServiceProvider extends PackageServiceProvider
         $connectionName = config(self::CONFIG_KEY . '.redis_connection', 'default');
         $connection = config('database.redis.' . $connectionName);
 
-        if (! $connection) {
+        if (!$connection) {
             throw new InvalidArgumentException(
                 "Invalid redis connection name in prometheus config: $connectionName",
             );

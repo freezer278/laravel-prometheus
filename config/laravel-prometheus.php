@@ -15,7 +15,14 @@ return [
 
     'default_metrics_enabled' => true,
 
-    'live_metrics_collectors' => [
-        \VMorozov\Prometheus\Collectors\DefaultMetrics\QueueSizeGaugeLiveMetricCollector::class,
+    'on_demand_metric_collectors' => [
+        [
+            'class' => \VMorozov\Prometheus\Collectors\DefaultMetrics\QueueSizeGaugeOnDemandMetricCollector::class,
+            'configs' => [
+                'connections' => ['redis'],
+                'queues' => ['default'],
+            ],
+        ],
+
     ],
 ];
