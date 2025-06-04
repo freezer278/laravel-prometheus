@@ -2,7 +2,6 @@
 
 namespace VMorozov\Prometheus\Collectors\DefaultMetrics;
 
-use VMorozov\Prometheus\Collectors\AbstractGaugeMetricCollector;
 use VMorozov\Prometheus\Collectors\Interfaces\OnDemandMetricCollector;
 use VMorozov\Prometheus\Metrics\Default\QueueSizeGauge;
 
