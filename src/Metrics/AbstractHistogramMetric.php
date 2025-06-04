@@ -1,10 +1,10 @@
 <?php
 
-namespace VMorozov\Prometheus\Collectors;
+namespace VMorozov\Prometheus\Metrics;
 
 use Prometheus\Histogram;
 
-abstract class AbstractHistogramMetricCollector extends AbstractMetricCollector
+abstract class AbstractHistogramMetric extends AbstractMetric
 {
     public function addItem(float $item, array $labels = []): void
     {
@@ -14,22 +14,13 @@ abstract class AbstractHistogramMetricCollector extends AbstractMetricCollector
 
     private function getHistogram(): Histogram
     {
-        return $this->collectionRegistry->getOrRegisterHistogram(
+        return $this->collectorRegistry->getOrRegisterHistogram(
             $this->namespace,
             $this->getMetricName(),
             $this->getHelpText(),
-            $this->getLabels(),
+            $this->getLabelNames(),
             $this->getBuckets(),
         );
-    }
-
-    abstract protected function getMetricName(): string;
-
-    abstract protected function getHelpText(): string;
-
-    protected function getLabels(): array
-    {
-        return [];
     }
 
     protected function getBuckets(): array

@@ -32,11 +32,11 @@ abstract class AbstractSummaryMetricCollector extends AbstractMetricCollector
 
     protected function getLabels(): array
     {
-        return ['type'];
+        return [];
     }
 
     protected function getQuantiles(): array
     {
-        return [0.01, 0.25, 0.5, 0.95, 0.98];
+        return [0.5, 0.95, 0.98];
     }
 }
