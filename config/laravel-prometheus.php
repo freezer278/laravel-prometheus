@@ -10,14 +10,14 @@ return [
 
     'route_url' => 'metrics',
     'route_middleware' => [
-        \VMorozov\Prometheus\Middleware\AllowIpsMiddleware::class,
+        VMorozov\Prometheus\Middleware\AllowIpsMiddleware::class,
     ],
 
     'default_metrics_enabled' => true,
 
     'on_demand_metric_collectors' => [
         [
-            'class' => \VMorozov\Prometheus\Collectors\DefaultMetrics\QueueSizeGaugeOnDemandMetricCollector::class,
+            'class' => VMorozov\Prometheus\Collectors\DefaultMetrics\QueueSizeGaugeOnDemandMetricCollector::class,
             'configs' => [
                 'connections' => ['redis'],
                 'queues' => ['default'],

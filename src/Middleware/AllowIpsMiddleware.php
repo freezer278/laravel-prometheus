@@ -12,7 +12,7 @@ class AllowIpsMiddleware
     {
         $allowedIps = config('prometheus.allowed_ips', []);
 
-        if (! count($allowedIps)) {
+        if (!count($allowedIps)) {
             return $next($request);
         }
 
