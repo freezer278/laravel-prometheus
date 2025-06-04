@@ -3,12 +3,12 @@
 namespace VMorozov\Prometheus\Collectors\DefaultMetrics;
 
 use VMorozov\Prometheus\Collectors\Interfaces\OnDemandMetricCollector;
-use VMorozov\Prometheus\Metrics\Default\QueueSizeGauge;
+use VMorozov\Prometheus\Metrics\Default\QueueSizeGaugeMetric;
 
 class QueueSizeGaugeOnDemandMetricCollector implements OnDemandMetricCollector
 {
     public function __construct(
-        private QueueSizeGauge $gauge
+        private QueueSizeGaugeMetric $gauge
     ) {
     }
 

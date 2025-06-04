@@ -4,7 +4,7 @@ namespace VMorozov\Prometheus\Metrics\Default;
 
 use VMorozov\Prometheus\Metrics\AbstractGaugeMetric;
 
-class QueueSizeGauge extends AbstractGaugeMetric
+class QueueSizeGaugeMetric extends AbstractGaugeMetric
 {
     protected function getMetricName(): string
     {

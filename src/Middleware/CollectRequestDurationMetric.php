@@ -6,14 +6,12 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use VMorozov\Prometheus\Collectors\DefaultMetrics\RequestDurationHistogramMetricCollector;
-use VMorozov\Prometheus\Collectors\DefaultMetrics\RequestDurationSummaryMetricCollector;
 use VMorozov\Prometheus\PrometheusServiceProvider;
 
 class CollectRequestDurationMetric
 {
     public function __construct(
         private RequestDurationHistogramMetricCollector $histogramMetricCollector,
-        private RequestDurationSummaryMetricCollector $summaryMetricCollector,
     ) {
     }
 
@@ -41,6 +39,5 @@ class CollectRequestDurationMetric
         }
 
         $this->histogramMetricCollector->recordRequest($request, $start);
-        $this->summaryMetricCollector->recordRequest($request, $start);
     }
 }
