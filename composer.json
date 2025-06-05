@@ -1,6 +1,7 @@
 {
     "name": "vmorozov/laravel-prometheus",
-    "description": "Prometheus client for laravel framework",
+    "description": "Prometheus client for laravel framework. Includes some of default metrics for any laravel application out of the box and ability to add custom metrics easily. .",
+    "type": "library",
     "keywords": [
         "vmorozov",
         "laravel-prometheus"

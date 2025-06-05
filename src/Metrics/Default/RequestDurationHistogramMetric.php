@@ -31,7 +31,6 @@ class RequestDurationHistogramMetric extends AbstractHistogramMetric
             200.0,
             250.0,
             300.0,
-            400.0,
             500.0,
             750.0,
             1000.0,
