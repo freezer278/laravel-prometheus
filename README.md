@@ -1,7 +1,7 @@
 # Prometheus client for laravel framework
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/vmorozov/laravel-prometheus.svg?style=flat-square)](https://packagist.org/packages/vmorozov/laravel-prometheus)
-[![Tests](https://img.shields.io/github/actions/workflow/status/vmorozov/laravel-prometheus/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/vmorozov/laravel-prometheus/actions/workflows/run-tests.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/freezer278/laravel-prometheus/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/freezer278/laravel-prometheus/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/vmorozov/laravel-prometheus.svg?style=flat-square)](https://packagist.org/packages/vmorozov/laravel-prometheus)
 
 This is where your description should go. Try and limit it to a paragraph or two. Consider adding a small example.
