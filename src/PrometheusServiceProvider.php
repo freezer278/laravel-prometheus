@@ -114,5 +114,4 @@ class PrometheusServiceProvider extends PackageServiceProvider
         $kernel->prependMiddleware(CollectRequestDurationMetric::class);
     }
 
-
 }
