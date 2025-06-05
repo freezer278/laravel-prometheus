@@ -37,13 +37,7 @@ class PrometheusServiceProvider extends PackageServiceProvider
 
         $this->initRoutes();
 
-        /** @var Kernel $kernel */
-        $kernel = $this->app->make(Kernel::class);
-        $middleware = $this->app->make(CollectRequestDurationMetric::class);
-        $this->app->singleton(CollectRequestDurationMetric::class, function () use ($middleware) {
-            return $middleware;
-        });
-        $kernel->prependMiddleware(CollectRequestDurationMetric::class);
+        $this->initDefaultMetricsCollectors();
     }
 
     public function packageBooted()
@@ -104,4 +98,21 @@ class PrometheusServiceProvider extends PackageServiceProvider
             'database' => (int) $connection['database'],
         ]);
     }
+
+    private function initDefaultMetricsCollectors(): void
+    {
+        if (!config(self::CONFIG_KEY . '.default_metrics_enabled', true)) {
+            return;
+        }
+
+        /** @var Kernel $kernel */
+        $kernel = $this->app->make(Kernel::class);
+        $middleware = $this->app->make(CollectRequestDurationMetric::class);
+        $this->app->singleton(CollectRequestDurationMetric::class, function () use ($middleware) {
+            return $middleware;
+        });
+        $kernel->prependMiddleware(CollectRequestDurationMetric::class);
+    }
+
+
 }
