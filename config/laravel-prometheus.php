@@ -1,8 +1,8 @@
 <?php
 
 return [
-    // namespace is used to prefix the prometheus metrics, can be any string value
-    'namespace' => env('PROMETHEUS_NAMESPACE', env('APP_NAME', 'laravel')),
+    // namespace is used to prefix the prometheus metrics, can be any string value, but it is recommended to keep a default value
+    'namespace' => env('PROMETHEUS_NAMESPACE', 'laravel'),
     // type of storage for keeping metrics data (known values: redis, in_memory, apcu). redis - works best now.
     'storage_type' => env('PROMETHEUS_STORAGE_TYPE', 'redis'),
     // redis connection for prometheus metrics (used only when storage_type == redis)
@@ -23,6 +23,5 @@ return [
                 'queues' => ['default'],
             ],
         ],
-
     ],
 ];
