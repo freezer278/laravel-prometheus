@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.1",
         "illuminate/contracts": ">=9.0",
         "promphp/prometheus_client_php": "^2.7",
         "spatie/laravel-package-tools": "^1.16"

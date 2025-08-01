@@ -12,6 +12,7 @@ return [
     'route_middleware' => [
         VMorozov\Prometheus\Middleware\AllowIpsMiddleware::class,
     ],
+    'allowed_ips' => env('PROMETHEUS_ALLOWED_IPS') ? explode(',', env('PROMETHEUS_ALLOWED_IPS')) : [],
 
     'default_metrics_enabled' => true,
 
