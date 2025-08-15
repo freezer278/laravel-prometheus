@@ -3,6 +3,7 @@
 namespace VMorozov\Prometheus\Events\Subscribers;
 
 use Illuminate\Events\Dispatcher;
+use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobQueued;
 use VMorozov\Prometheus\Collectors\DefaultMetrics\QueueProcessedJobsCounterMetricCollector;
@@ -21,6 +22,7 @@ class QueueEventsSubscriber
         return [
             JobQueued::class => 'handleJobPushedToQueueEvent',
             JobProcessed::class => 'handleJobProcessedEvent',
+            JobFailed::class => 'handleJobFailedEvent',
         ];
     }
 
@@ -32,5 +34,10 @@ class QueueEventsSubscriber
     public function handleJobProcessedEvent(JobProcessed $event): void
     {
         $this->processedJobsCollector->recordProcessedJob($event);
+    }
+
+    public function handleJobFailedEvent(JobFailed $event): void
+    {
+        $this->processedJobsCollector->recordFailedJob($event);
     }
 }
