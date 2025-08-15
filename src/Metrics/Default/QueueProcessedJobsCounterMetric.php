@@ -1,13 +1,14 @@
-
 <?php
 
 namespace VMorozov\Prometheus\Metrics\Default;
 
 use VMorozov\Prometheus\Metrics\AbstractCounterMetric;
-use VMorozov\Prometheus\Metrics\AbstractGaugeMetric;
 
 class QueueProcessedJobsCounterMetric extends AbstractCounterMetric
 {
+    public const STATUS_SUCCESS = 'success';
+    public const STATUS_FAILED = 'failed';
+
     protected function getMetricName(): string
     {
         return 'queue_processed_jobs_counter';
