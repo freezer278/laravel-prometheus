@@ -12,7 +12,7 @@ class RequestDurationHistogramMetricCollector
     ) {
     }
 
-    public function recordRequest(Request $request, float $startTime): void
+    public function recordRequest(Request $request, float $startTime, int $statusCode = 200): void
     {
         $endTime = microtime(true);
         $diffInMilliseconds = ($endTime - $startTime) * 1000;
@@ -20,6 +20,7 @@ class RequestDurationHistogramMetricCollector
         $this->requestDurationHistogram->addItem($diffInMilliseconds, [
             'url' => $request->path(),
             'method' => $request->method(),
+            'status_code' => $statusCode,
         ]);
     }
 }

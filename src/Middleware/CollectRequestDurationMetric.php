@@ -38,6 +38,8 @@ class CollectRequestDurationMetric
             return;
         }
 
-        $this->histogramMetricCollector->recordRequest($request, $start);
+        $status = $response->getStatusCode() ?? 200;
+
+        $this->histogramMetricCollector->recordRequest($request, $start, $status);
     }
 }

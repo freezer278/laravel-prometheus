@@ -18,7 +18,7 @@ class RequestDurationHistogramMetric extends AbstractHistogramMetric
 
     protected function getLabelNames(): array
     {
-        return ['url', 'method'];
+        return ['url', 'method', 'status_code'];
     }
 
     protected function getBuckets(): array
