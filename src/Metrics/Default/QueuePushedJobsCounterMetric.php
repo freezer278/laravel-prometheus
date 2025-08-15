@@ -3,7 +3,6 @@
 namespace VMorozov\Prometheus\Metrics\Default;
 
 use VMorozov\Prometheus\Metrics\AbstractCounterMetric;
-use VMorozov\Prometheus\Metrics\AbstractGaugeMetric;
 
 class QueuePushedJobsCounterMetric extends AbstractCounterMetric
 {

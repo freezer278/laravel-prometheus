@@ -3,9 +3,6 @@
 namespace VMorozov\Prometheus;
 
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Queue\Events\JobProcessed;
-use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
@@ -15,7 +12,6 @@ use Prometheus\Storage\InMemory;
 use Prometheus\Storage\Redis;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VMorozov\Prometheus\Collectors\DefaultMetrics\QueuePushedJobsCounterMetricCollector;
 use VMorozov\Prometheus\Controllers\MetricsController;
 use VMorozov\Prometheus\Events\Subscribers\QueueEventsSubscriber;
 use VMorozov\Prometheus\Middleware\CollectRequestDurationMetric;

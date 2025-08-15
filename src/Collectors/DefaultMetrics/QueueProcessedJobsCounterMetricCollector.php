@@ -4,9 +4,7 @@ namespace VMorozov\Prometheus\Collectors\DefaultMetrics;
 
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
-use Illuminate\Queue\Events\JobQueued;
 use VMorozov\Prometheus\Metrics\Default\QueueProcessedJobsCounterMetric;
-use VMorozov\Prometheus\Metrics\Default\QueuePushedJobsCounterMetric;
 
 class QueueProcessedJobsCounterMetricCollector
 {
