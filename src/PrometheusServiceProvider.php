@@ -2,6 +2,9 @@
 
 namespace VMorozov\Prometheus;
 
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
@@ -11,6 +14,7 @@ use Prometheus\Storage\InMemory;
 use Prometheus\Storage\Redis;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use VMorozov\Prometheus\Collectors\DefaultMetrics\QueuePushedJobsCounterMetricCollector;
 use VMorozov\Prometheus\Controllers\MetricsController;
 use VMorozov\Prometheus\Middleware\CollectRequestDurationMetric;
 
@@ -37,11 +41,18 @@ class PrometheusServiceProvider extends PackageServiceProvider
 
         $this->initRoutes();
 
-        $this->initDefaultMetricsCollectors();
+        /** @var Kernel $kernel */
+        $kernel = $this->app->make(Kernel::class);
+        $middleware = $this->app->make(CollectRequestDurationMetric::class);
+        $this->app->singleton(CollectRequestDurationMetric::class, function () use ($middleware) {
+            return $middleware;
+        });
+        $kernel->prependMiddleware(CollectRequestDurationMetric::class);
     }
 
     public function packageBooted()
     {
+        $this->initQueueJobsMetricsCollection();
     }
 
     private function initRoutes(): void
@@ -99,19 +110,20 @@ class PrometheusServiceProvider extends PackageServiceProvider
         ]);
     }
 
-    private function initDefaultMetricsCollectors(): void
+    private function initQueueJobsMetricsCollection(): void
     {
-        if (!config(self::CONFIG_KEY . '.default_metrics_enabled', true)) {
-            return;
-        }
+        $pushedJobsCollector = $this->app->make(QueuePushedJobsCounterMetricCollector::class);
 
-        /** @var Kernel $kernel */
-        $kernel = $this->app->make(Kernel::class);
-        $middleware = $this->app->make(CollectRequestDurationMetric::class);
-        $this->app->singleton(CollectRequestDurationMetric::class, function () use ($middleware) {
-            return $middleware;
+
+
+        Queue::before(function (JobProcessing $event) use ($pushedJobsCollector) {
+            $pushedJobsCollector->recordJob($event);
         });
-        $kernel->prependMiddleware(CollectRequestDurationMetric::class);
-    }
 
+        Queue::after(function (JobProcessed $event) {
+            // $event->connectionName
+            // $event->job
+            // $event->job->payload()
+        });
+    }
 }
