@@ -12,6 +12,7 @@ use Prometheus\Storage\InMemory;
 use Prometheus\Storage\Redis;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use VMorozov\Prometheus\Collectors\DefaultMetrics\QueueJobDurationHistogramMetricCollector;
 use VMorozov\Prometheus\Controllers\MetricsController;
 use VMorozov\Prometheus\Events\Subscribers\QueueEventsSubscriber;
 use VMorozov\Prometheus\Middleware\CollectRequestDurationMetric;
@@ -110,6 +111,8 @@ class PrometheusServiceProvider extends PackageServiceProvider
 
     private function initQueueJobsMetricsCollection(): void
     {
+        $this->app->singleton(QueueJobDurationHistogramMetricCollector::class);
+
         Event::subscribe(QueueEventsSubscriber::class);
     }
 }
