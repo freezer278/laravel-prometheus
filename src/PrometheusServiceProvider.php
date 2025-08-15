@@ -2,6 +2,7 @@
 
 namespace VMorozov\Prometheus;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
@@ -16,6 +17,7 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use VMorozov\Prometheus\Collectors\DefaultMetrics\QueuePushedJobsCounterMetricCollector;
 use VMorozov\Prometheus\Controllers\MetricsController;
+use VMorozov\Prometheus\Events\Subscribers\QueueEventsSubscriber;
 use VMorozov\Prometheus\Middleware\CollectRequestDurationMetric;
 
 class PrometheusServiceProvider extends PackageServiceProvider
@@ -112,18 +114,6 @@ class PrometheusServiceProvider extends PackageServiceProvider
 
     private function initQueueJobsMetricsCollection(): void
     {
-        $pushedJobsCollector = $this->app->make(QueuePushedJobsCounterMetricCollector::class);
-
-
-
-        Queue::before(function (JobProcessing $event) use ($pushedJobsCollector) {
-            $pushedJobsCollector->recordJob($event);
-        });
-
-        Queue::after(function (JobProcessed $event) {
-            // $event->connectionName
-            // $event->job
-            // $event->job->payload()
-        });
+        Event::subscribe(QueueEventsSubscriber::class);
     }
 }

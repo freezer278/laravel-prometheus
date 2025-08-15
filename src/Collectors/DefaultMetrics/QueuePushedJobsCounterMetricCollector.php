@@ -2,10 +2,8 @@
 
 namespace VMorozov\Prometheus\Collectors\DefaultMetrics;
 
-use Illuminate\Http\Request;
+use Illuminate\Queue\Events\JobQueued;
 use VMorozov\Prometheus\Metrics\Default\QueuePushedJobsCounterMetric;
-use VMorozov\Prometheus\Metrics\Default\RequestDurationHistogramMetric;
-use Illuminate\Queue\Events\JobProcessing;
 
 class QueuePushedJobsCounterMetricCollector
 {
@@ -14,12 +12,12 @@ class QueuePushedJobsCounterMetricCollector
     ) {
     }
 
-    public function recordJob(JobProcessing $event): void
+    public function recordJob(JobQueued $event): void
     {
         $this->metric->increment([
             'connection_name' => $event->connectionName,
-            'queue_name' => $event->job->getQueue(),
-            'queue_job_name' => $event->job->resolveName(),
+            'queue_name' => $event->queue,
+            'queue_job_name' => get_class($event->job),
         ]);
     }
 }
