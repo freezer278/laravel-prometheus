@@ -46,7 +46,10 @@ class PrometheusServiceProvider extends PackageServiceProvider
         $this->app->singleton(CollectRequestDurationMetric::class, function () use ($middleware) {
             return $middleware;
         });
-        $kernel->prependMiddleware(CollectRequestDurationMetric::class);
+
+        if ($this->defaultMetricsEnabled()) {
+            $kernel->prependMiddleware(CollectRequestDurationMetric::class);
+        }
     }
 
     public function packageBooted()
@@ -111,8 +114,17 @@ class PrometheusServiceProvider extends PackageServiceProvider
 
     private function initQueueJobsMetricsCollection(): void
     {
+        if (!$this->defaultMetricsEnabled()) {
+            return;
+        }
+
         $this->app->singleton(QueueJobDurationHistogramMetricCollector::class);
 
         Event::subscribe(QueueEventsSubscriber::class);
+    }
+
+    private function defaultMetricsEnabled(): bool
+    {
+        return config(self::CONFIG_KEY . '.default_metrics_enabled', true);
     }
 }
