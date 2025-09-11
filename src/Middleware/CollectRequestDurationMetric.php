@@ -26,6 +26,10 @@ class CollectRequestDurationMetric
             return;
         }
 
+        if (!config(PrometheusServiceProvider::CONFIG_KEY . '.route_url', true)) {
+            return;
+        }
+
         if (defined('LARAVEL_START')) {
             $start = LARAVEL_START;
         } elseif (defined('APP_START')) {
@@ -34,6 +38,8 @@ class CollectRequestDurationMetric
             return;
         }
 
-        $this->histogramMetricCollector->recordRequest($request, $start);
+        $status = $response->getStatusCode() ?? 200;
+
+        $this->histogramMetricCollector->recordRequest($request, $start, $status);
     }
 }

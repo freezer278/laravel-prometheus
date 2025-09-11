@@ -2,6 +2,7 @@
 
 namespace VMorozov\Prometheus;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
@@ -11,7 +12,9 @@ use Prometheus\Storage\InMemory;
 use Prometheus\Storage\Redis;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use VMorozov\Prometheus\Collectors\DefaultMetrics\QueueJobDurationHistogramMetricCollector;
 use VMorozov\Prometheus\Controllers\MetricsController;
+use VMorozov\Prometheus\Events\Subscribers\QueueEventsSubscriber;
 use VMorozov\Prometheus\Middleware\CollectRequestDurationMetric;
 
 class PrometheusServiceProvider extends PackageServiceProvider
@@ -37,11 +40,21 @@ class PrometheusServiceProvider extends PackageServiceProvider
 
         $this->initRoutes();
 
-        $this->initDefaultMetricsCollectors();
+        /** @var Kernel $kernel */
+        $kernel = $this->app->make(Kernel::class);
+        $middleware = $this->app->make(CollectRequestDurationMetric::class);
+        $this->app->singleton(CollectRequestDurationMetric::class, function () use ($middleware) {
+            return $middleware;
+        });
+
+        if ($this->defaultMetricsEnabled()) {
+            $kernel->prependMiddleware(CollectRequestDurationMetric::class);
+        }
     }
 
     public function packageBooted()
     {
+        $this->initQueueJobsMetricsCollection();
     }
 
     private function initRoutes(): void
@@ -99,19 +112,19 @@ class PrometheusServiceProvider extends PackageServiceProvider
         ]);
     }
 
-    private function initDefaultMetricsCollectors(): void
+    private function initQueueJobsMetricsCollection(): void
     {
-        if (!config(self::CONFIG_KEY . '.default_metrics_enabled', true)) {
+        if (!$this->defaultMetricsEnabled()) {
             return;
         }
 
-        /** @var Kernel $kernel */
-        $kernel = $this->app->make(Kernel::class);
-        $middleware = $this->app->make(CollectRequestDurationMetric::class);
-        $this->app->singleton(CollectRequestDurationMetric::class, function () use ($middleware) {
-            return $middleware;
-        });
-        $kernel->prependMiddleware(CollectRequestDurationMetric::class);
+        $this->app->singleton(QueueJobDurationHistogramMetricCollector::class);
+
+        Event::subscribe(QueueEventsSubscriber::class);
     }
 
+    private function defaultMetricsEnabled(): bool
+    {
+        return config(self::CONFIG_KEY . '.default_metrics_enabled', true);
+    }
 }
