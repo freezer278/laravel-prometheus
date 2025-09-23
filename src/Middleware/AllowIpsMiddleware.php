@@ -5,12 +5,13 @@ namespace VMorozov\Prometheus\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\IpUtils;
+use VMorozov\Prometheus\PrometheusServiceProvider;
 
 class AllowIpsMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        $allowedIps = config('prometheus.allowed_ips', []);
+        $allowedIps = config(PrometheusServiceProvider::CONFIG_KEY . '.allowed_ips', []);
 
         if (!count($allowedIps)) {
             return $next($request);
