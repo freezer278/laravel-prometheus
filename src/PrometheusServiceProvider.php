@@ -13,6 +13,7 @@ use Prometheus\Storage\Redis;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use VMorozov\Prometheus\Collectors\DefaultMetrics\QueueJobDurationHistogramMetricCollector;
+use VMorozov\Prometheus\Commands\ClearStoredMetricsCommand;
 use VMorozov\Prometheus\Controllers\MetricsController;
 use VMorozov\Prometheus\Events\Subscribers\QueueEventsSubscriber;
 use VMorozov\Prometheus\Middleware\CollectRequestDurationMetric;
@@ -31,7 +32,10 @@ class PrometheusServiceProvider extends PackageServiceProvider
     {
         $package
             ->name(self::CONFIG_KEY)
-            ->hasConfigFile(self::CONFIG_KEY);
+            ->hasConfigFile(self::CONFIG_KEY)
+            ->hasCommands([
+                ClearStoredMetricsCommand::class,
+            ]);
     }
 
     public function packageRegistered(): void
