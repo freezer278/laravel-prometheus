@@ -18,7 +18,7 @@ class RequestDurationHistogramMetricCollector
         $diffInMilliseconds = ($endTime - $startTime) * 1000;
 
         $this->requestDurationHistogram->addItem($diffInMilliseconds, [
-            'url' => $request->path(),
+            'url' => $request->route()?->uri() ?? $request->path(),
             'method' => $request->method(),
             'status_code' => $statusCode,
         ]);
