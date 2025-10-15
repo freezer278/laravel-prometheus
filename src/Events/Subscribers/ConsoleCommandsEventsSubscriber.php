@@ -23,7 +23,7 @@ class ConsoleCommandsEventsSubscriber
         'inspire',
         'list',
         'make:',
-        'migrate:',
+        'migrate',
         'optimize:',
         'package:',
         'pail',
