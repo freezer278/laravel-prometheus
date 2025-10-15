@@ -25,4 +25,8 @@ return [
             ],
         ],
     ],
+
+    'console_commands_metrics' => [
+        'exclude_default_laravel_commands' => true,
+    ],
 ];
