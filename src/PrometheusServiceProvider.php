@@ -12,9 +12,11 @@ use Prometheus\Storage\InMemory;
 use Prometheus\Storage\Redis;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use VMorozov\Prometheus\Collectors\DefaultMetrics\ConsoleCommandDurationHistogramMetricCollector;
 use VMorozov\Prometheus\Collectors\DefaultMetrics\QueueJobDurationHistogramMetricCollector;
 use VMorozov\Prometheus\Commands\ClearStoredMetricsCommand;
 use VMorozov\Prometheus\Controllers\MetricsController;
+use VMorozov\Prometheus\Events\Subscribers\ConsoleCommandsEventsSubscriber;
 use VMorozov\Prometheus\Events\Subscribers\QueueEventsSubscriber;
 use VMorozov\Prometheus\Middleware\CollectRequestDurationMetric;
 
@@ -59,6 +61,7 @@ class PrometheusServiceProvider extends PackageServiceProvider
     public function packageBooted()
     {
         $this->initQueueJobsMetricsCollection();
+        $this->initConsoleCommandsMetricsCollection();
     }
 
     private function initRoutes(): void
@@ -125,6 +128,17 @@ class PrometheusServiceProvider extends PackageServiceProvider
         $this->app->singleton(QueueJobDurationHistogramMetricCollector::class);
 
         Event::subscribe(QueueEventsSubscriber::class);
+    }
+
+    private function initConsoleCommandsMetricsCollection(): void
+    {
+        if (!$this->defaultMetricsEnabled()) {
+            return;
+        }
+
+        $this->app->singleton(ConsoleCommandDurationHistogramMetricCollector::class);
+
+        Event::subscribe(ConsoleCommandsEventsSubscriber::class);
     }
 
     private function defaultMetricsEnabled(): bool
