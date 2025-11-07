@@ -19,6 +19,21 @@ composer require vmorozov/laravel-prometheus
 php artisan vendor:publish --provider="VMorozov\\Prometheus\\PrometheusServiceProvider"
 ```
 
+## Upgrading version
+1. Update the package version in `composer.json`
+2. Run 
+```bash
+composer update
+```
+3. Run command to update configs: 
+```bash
+php artisan vendor:publish --provider="VMorozov\\Prometheus\\PrometheusServiceProvider" --force
+```
+4. Run clear stored metrics: 
+```bash
+php artisan prometheus:clear_stored_metrics
+```
+
 ## Usage
 
 This package provides default metrics that allow you to monitor response times (divided into buckets and percentiles) and request counts.   
@@ -26,6 +41,11 @@ It also allows you to create custom metrics and collectors for your specific nee
 
 To see the collected metrics, go to the `/metrics` endpoint of your application.   
 This endpoint returns metrics in the Prometheus exposition format, which can be scraped by a Prometheus server.
+
+You can clear stored metrics using the built-in `prometheus:clear_stored_metrics` command:
+```bash
+php artisan prometheus:clear_stored_metrics
+`````
 
 ## Configuration
 
