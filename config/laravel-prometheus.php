@@ -13,6 +13,7 @@ return [
         VMorozov\Prometheus\Middleware\AllowIpsMiddleware::class,
     ],
     'allowed_ips' => env('PROMETHEUS_ALLOWED_IPS') ? explode(',', env('PROMETHEUS_ALLOWED_IPS')) : [],
+    'ignore_metrics_exceptions_on_render' => env('PROMETHEUS_IGNORE_METRICS_EXCEPTIONS_ON_RENDER', true),
 
     'default_metrics_enabled' => true,
 

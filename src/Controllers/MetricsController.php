@@ -21,7 +21,7 @@ class MetricsController
     {
         $this->callLiveMetricsCollectors();
 
-        $result = $this->textRenderer->render($this->collectorRegistry->getMetricFamilySamples());
+        $result = $this->textRenderer->render($this->collectorRegistry->getMetricFamilySamples(), config(PrometheusServiceProvider::CONFIG_KEY . '.ignore_metrics_exceptions_on_render', true));
 
         return new Response($result, 200, ['Content-type' => RenderTextFormat::MIME_TYPE]);
     }
